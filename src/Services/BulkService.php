@@ -21,7 +21,7 @@ class BulkService
         }
 
         do {
-            $bulk = Redis::lrange($key, 0, $batchSize);
+            $bulk = Redis::lrange($key, 0, \max($batchSize - 1, 0));
             $count = \count($bulk);
             if ($count) {
                 yield $bulk;
