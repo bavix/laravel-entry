@@ -2,7 +2,7 @@
 
 namespace Bavix\Entry\Jobs;
 
-use Bavix\Entry\Models\Entry;
+use Bavix\LaravelClickHouse\Database\Eloquent\Model as Entry;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
