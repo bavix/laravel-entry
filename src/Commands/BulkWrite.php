@@ -2,6 +2,7 @@
 
 namespace Bavix\Entry\Commands;
 
+use Bavix\LaravelClickHouse\Database\Eloquent\Model as Entry;
 use Bavix\Entry\Services\BulkService;
 use Bavix\Entry\Jobs\BulkWriter;
 use Illuminate\Console\Command;
@@ -36,6 +37,7 @@ class BulkWrite extends Command
             $lock->block(1);
             // Lock acquired after waiting maximum of second...
             $batchSize = \config('entry.batchSize', 10000);
+            $queueName = \config('entry.queueName', 'default');
             $keys = app(BulkService::class)->keys();
             foreach ($keys as $key) {
                 [$bulkName, $class] = \explode(':', $key, 2);
@@ -47,10 +49,13 @@ class BulkWrite extends Command
                         $bulkData[$itemKey] = \json_decode($itemValue, true);
                     }
 
-                    $queueName = \config('entry.queueName', 'default');
-                    $job = new BulkWriter(new $class, $bulkData);
-                    $job->onQueue($queueName);
-                    \dispatch($job);
+                    $modelEntry = new $class;
+                    $bulkData = $this->bulkHandling($modelEntry, $bulkData);
+                    if ($bulkData) {
+                        $job = new BulkWriter($modelEntry, $bulkData);
+                        $job->onQueue($queueName);
+                        \dispatch($job);
+                    }
                 }
             }
         } catch (LockTimeoutException $timeoutException) {
@@ -58,6 +63,19 @@ class BulkWrite extends Command
         } finally {
             optional($lock)->release();
         }
+    }
+
+    /**
+     * The process of processing data before sending it to the queue.
+     * Here we analyze the data and Supplement it with information from the heap.
+     *
+     * @param Entry $entry
+     * @param array $bulk
+     * @return array
+     */
+    protected function bulkHandling(Entry $entry, array $bulk): array
+    {
+        return $bulk;
     }
 
 }
