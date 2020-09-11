@@ -16,7 +16,7 @@ Laravel Entry - Effective ClickHouse entry with redis and queues.
 * **Vendor**: bavix
 * **Package**: Laravel Entry
 * **Version**: [![Latest Stable Version](https://poser.pugx.org/bavix/laravel-entry/v/stable)](https://packagist.org/packages/bavix/laravel-entry)
-* **Laravel Version**: `6.0`, `7.0`
+* **Laravel Version**: `6.x`, `7.x`, `8.x`
 * **PHP Version**: 7.2+ 
 * **[Composer](https://getcomposer.org/):** `composer require bavix/laravel-entry`
 
