@@ -20,6 +20,12 @@ Laravel Entry - Effective ClickHouse entry with redis and queues.
 * **PHP Version**: 7.2+ 
 * **[Composer](https://getcomposer.org/):** `composer require bavix/laravel-entry`
 
+> :warning: If you are using php 8 and `the-tinderbox/clickhouse-*` author hasn't added support yet, then connect mine.
+> 
+> composer req bavix/clickhouse-php-client
+> 
+> composer req bavix/clickhouse-builder
+
 ---
 Supported by
 
